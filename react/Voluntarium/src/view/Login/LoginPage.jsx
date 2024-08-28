@@ -1,18 +1,30 @@
 import { Component } from "react";
 import { Label, Input, Row, Col, Card, CardHeader, CardBody, CardFooter, Button, Container } from "reactstrap";
 import { Link, useNavigate } from 'react-router-dom';
-
-const withRouter = (url) => {
-    const navigate = useNavigate();
-    navigate.withRouter
-}
+import ModalVoluntaryRegister from "../../shared/ModalVoluntaryRegister";
 
 export default class LoginPage extends Component {
 
+    state = {
+        modal: {
+            voluntary: {
+                isOpen: false
+            },
+            association: {
+                isOpen: false
+            }
+        }
+    }
 
+    toggle(win) {
+        const { modal } = this.state;
+        modal[win].isOpen = !modal[win].isOpen;
+        this.setState({ modal });
+    }
 
 
     render() {
+        const { modal } = this.state;
         return (
             <Container className="fit-screen d-flex justify-content-center align-items-center flex-column">
                 <Row>
@@ -40,7 +52,8 @@ export default class LoginPage extends Component {
                             <CardFooter className="text-end">
                                 <Button
                                     color="link"
-                                ><Link to="/cadastro/voluntario">Cadastrar</Link></Button>
+                                    onClick={() => this.toggle('voluntary')}
+                                >Cadastrar</Button>
                                 <Button
                                     color="primary"
                                 >Logar</Button>
@@ -75,6 +88,7 @@ export default class LoginPage extends Component {
                         </Card>
                     </Col>
                 </Row>
+                <ModalVoluntaryRegister isOpen={modal.voluntary.isOpen} onClose={() => this.toggle('voluntary')} />
             </Container>
         )
     }
