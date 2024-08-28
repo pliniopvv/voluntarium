@@ -1,0 +1,6 @@
+@cppbackend_HostAddress = http://localhost:5285
+
+GET {{cppbackend_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

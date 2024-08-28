@@ -1,0 +1,21 @@
+<app-fit-container-wrapper>
+  <div class="m-auto d-flex justify-content-center align-items-center">
+    <app-box-wrapper title="Login" style="min-width: 600px;">
+      <p>Login:</p>
+      <app-input-field
+        name="username"
+        type="text"
+        (set)="setValue($event, 'username')"
+      />
+      <p>Senha:</p>
+      <app-input-field
+        name="password"
+        type="password"
+        (set)="setValue($event, 'password')"
+      />
+      <div class="d-grid mt-2">
+        <button class="btn btn-dark" (click)="login()">Logar</button>
+      </div>
+    </app-box-wrapper>
+  </div>
+</app-fit-container-wrapper>

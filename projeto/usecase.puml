@@ -1,0 +1,35 @@
+@startuml
+
+package Cadastros {
+    actor "Desempregado" as voluntary
+    actor "ONG/Associação" as ong
+}
+
+package Apoio {
+    actor "Empresas Associadas" as enterprise
+}
+
+package Vagas {
+    usecase "Cadastrar vagas" as cria_vaga
+    usecase "Procurar vaga" as procura_vaga
+    usecase "Vaga" as vaga
+    usecase "Funcionário" as contrato
+
+    ong --> cria_vaga
+    voluntary--> procura_vaga
+
+    contrato --> enterprise : Contrata
+
+    vaga .. contrato #blue;line.dotted        : Contrata funcinário
+    cria_vaga .. vaga #blue;line.dotted       : Surge a vaga
+    procura_vaga .. vaga #blue;line.dotted    : Encontra a vaga
+
+}
+
+note left of voluntary
+    Currículo de qualificações à
+    disposição da ONG e para futuras
+    contratações.
+end note
+
+@enduml

@@ -1,0 +1,41 @@
+@startgantt
+language pt
+
+-- Idealização e Análise --
+[Seleção das linguagens] as [SL] requires 1 day
+[Análise dos serviços de cloud] as [ASC] requires 2 days
+-- Codificação e Execução --
+[Início da codificação] as [IC] requires 1 day
+[Dia de codificação 1] as [DC1] requires 2 days
+[Dia de codificação 2 (Ajustes finais)] as [DC2] requires 2 days
+-- Entrega --
+[Oferecimento do sistema à APA] as [OSAPA] requires 1 day
+
+Project starts 2024-08-23
+
+Monday are closed
+Tuesday are closed
+Wednesday are closed
+Thursday are closed
+Friday are closed
+2024/08/24	is colored in #cfc
+2024/08/25	is colored in #cfc
+2024/08/31	is colored in #cfc
+2024/09/01	is colored in #cfc
+2024/09/07	is colored in #cfc
+2024/09/08	is colored in #cfc
+2024/09/14	is colored in #cfc
+2024/09/15	is colored in #cfc
+2024/09/21	is colored in #cfc
+2024/09/22	is colored in #cfc
+2024/09/28	is colored in #cfc
+2024/09/29	is colored in #cfc
+
+[SL] starts D+0
+[ASC] starts D+2
+[IC] starts D+9
+[DC1] starts D+15
+[DC2] starts D+21
+[OSAPA] starts at [DC2]'s end
+
+@endgantt
