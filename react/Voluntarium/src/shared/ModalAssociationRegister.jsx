@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 import InputDoubleChecked from "./InputDoubleChecked";
 import { configureInterceptors } from "../utils/EspecialFunctions";
 
-export default class ModalVoluntaryRegister extends Component {
+export default class ModalAssociationRegister extends Component {
     state = {
         isOpen: false,
         model: {},
@@ -27,7 +27,7 @@ export default class ModalVoluntaryRegister extends Component {
     }
 
     validate() {
-        const { errors, valid } = this.state;
+        const { errors, valid, model } = this.state;
         let has = false;
 
         if (!valid.email) {
@@ -44,6 +44,7 @@ export default class ModalVoluntaryRegister extends Component {
         }
 
         this.setState({ errors });
+
         return !has;
     }
 
@@ -61,7 +62,7 @@ export default class ModalVoluntaryRegister extends Component {
         const { isOpen, onClose } = this.props;
         return (
             <Modal isOpen={isOpen} toggle={() => onClose()}>
-                <ModalHeader toggle={() => onClose()}>Cadastrar Voluntário</ModalHeader>
+                <ModalHeader toggle={() => onClose()}>Cadastrar Associação</ModalHeader>
                 <ModalBody>
                     <Row>
                         <Col>

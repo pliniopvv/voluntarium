@@ -2,6 +2,9 @@ import { Component } from "react";
 import { Label, Input, Row, Col, Card, CardHeader, CardBody, CardFooter, Button, Container } from "reactstrap";
 import { Link, useNavigate } from 'react-router-dom';
 import ModalVoluntaryRegister from "../../shared/ModalVoluntaryRegister";
+import { toast } from "react-toastify";
+import { configureInterceptors } from "../../utils/EspecialFunctions";
+import ModalAssociationRegister from "../../shared/ModalAssociationRegister";
 
 export default class LoginPage extends Component {
 
@@ -22,6 +25,21 @@ export default class LoginPage extends Component {
         this.setState({ modal });
     }
 
+    async login(type) {
+        const cmds = [];
+        cmds['association'] = this.associationLogin.bind(this);
+        cmds['voluntary'] = this.voluntaryLogin.bind(this);
+        await cmds[type]();
+        configureInterceptors();
+    }
+
+    async associationLogin() {
+        toast.success("Logado como Associação");
+    }
+
+    async voluntaryLogin() {
+        toast.success("Logado como Voluntário");
+    }
 
     render() {
         const { modal } = this.state;
@@ -56,6 +74,7 @@ export default class LoginPage extends Component {
                                 >Cadastrar</Button>
                                 <Button
                                     color="primary"
+                                    onClick={() => this.login('voluntary')}
                                 >Logar</Button>
                             </CardFooter>
                         </Card>
@@ -80,15 +99,18 @@ export default class LoginPage extends Component {
                             <CardFooter className="text-end">
                                 <Button
                                     color="link"
-                                ><Link to="/cadastro/associacao">Cadastrar</Link></Button>
+                                    onClick={() => this.toggle('association')}
+                                >Cadastrar</Button>
                                 <Button
                                     color="primary"
+                                    onClick={() => this.login('association')}
                                 >Logar</Button>
                             </CardFooter>
                         </Card>
                     </Col>
                 </Row>
                 <ModalVoluntaryRegister isOpen={modal.voluntary.isOpen} onClose={() => this.toggle('voluntary')} />
+                <ModalAssociationRegister isOpen={modal.association.isOpen} onClose={() => this.toggle('association')} />
             </Container>
         )
     }

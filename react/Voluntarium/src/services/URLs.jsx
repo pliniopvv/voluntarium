@@ -1,2 +1,2 @@
 
-export const URL_Register = `${process.env.REACT_APP_HOST}/Register`;
+export const URL_Register = `${import.meta.env.VITE_API}/register`;

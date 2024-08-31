@@ -3,8 +3,12 @@ const ArrayMenu = [
         name: "Principal",
         submenu: [
             {
+                name: "Home",
+                path: "/home"
+            },
+            {
                 name: "Perfil",
-                path: "/home/perfil"
+                path: "/perfil"
             }
         ]
     }

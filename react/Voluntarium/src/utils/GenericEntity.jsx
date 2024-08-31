@@ -2,8 +2,8 @@ import axios from "axios";
 
 export class GenericEntity {
 
-    constructor({ url }) {
-        this.url = url;
+    constructor(obj) {
+        Object.assign(this, obj);
     }
 
     async load() {
