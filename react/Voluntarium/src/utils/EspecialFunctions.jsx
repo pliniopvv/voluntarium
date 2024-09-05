@@ -6,12 +6,14 @@ let __TOKEN__ = null;
 
 
 export function configureInterceptors() {
-    // axios.interceptors.request.use((config) => {
-    //     config.headers.Authorization = 'Authorization';
-    // });
-
     if (__HAS_TOKEN__)
         axios.defaults.headers.common['Authorization'] = getToken();
+}
+
+export function checkToken() {
+    const access_token = localStorage.getItem('access_token');
+    if (access_token)
+        setToken(access_token);
 }
 
 function getToken() {

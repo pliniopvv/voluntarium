@@ -1,12 +1,14 @@
 import { Component } from "react";
 import { Label, Input, Row, Col, Card, CardHeader, CardBody, CardFooter, Button, Container } from "reactstrap";
-import { Link, useNavigate } from 'react-router-dom';
 import ModalVoluntaryRegister from "../../shared/ModalVoluntaryRegister";
 import { toast } from "react-toastify";
-import { configureInterceptors } from "../../utils/EspecialFunctions";
+import { configureInterceptors, setToken } from "../../utils/EspecialFunctions";
 import ModalAssociationRegister from "../../shared/ModalAssociationRegister";
+import { URL_Login, URL_Register } from "../../services/URLs";
+import axios from "axios";
+import withRouter from "../../shared/withRouter";
 
-export default class LoginPage extends Component {
+class LoginPage extends Component {
 
     state = {
         modal: {
@@ -16,7 +18,12 @@ export default class LoginPage extends Component {
             association: {
                 isOpen: false
             }
-        }
+        },
+        model: {}
+    }
+
+    setValue(cmp) {
+        this.setState({ model: Object.assign(this.state.model, cmp) });
     }
 
     toggle(win) {
@@ -26,17 +33,39 @@ export default class LoginPage extends Component {
     }
 
     async login(type) {
-        const cmds = [];
-        cmds['association'] = this.associationLogin.bind(this);
-        cmds['voluntary'] = this.voluntaryLogin.bind(this);
-        await cmds[type]();
         configureInterceptors();
+        await this.loginAll();
+        // const cmds = [];
+        // cmds['association'] = this.associationLogin.bind(this);
+        // cmds['voluntary'] = this.voluntaryLogin.bind(this);
+        // await cmds[type]();
+    }
+
+
+    async loginAll() {
+        const { model } = this.state;
+        const request = axios.post(`${URL_Login}`, model);
+        const resp = await toast.promise(request, {
+            pending: "Logando ...",
+            success: "Logado, redirecionando.",
+            error: "Falha em logar, verifique usuário/senha e tente novamente."
+        });
+        if (resp.status == 200)
+            this.finishLogin(resp.data);
+        else
+            toast.error("Erro desconhecido, favor informar o desenvolvedor.");
+    }
+
+    finishLogin(data) {
+        const { access_token } = data;
+        const { navigate } = this.props;
+        setToken(access_token);
+        navigate("/");
     }
 
     async associationLogin() {
         toast.success("Logado como Associação");
     }
-
     async voluntaryLogin() {
         toast.success("Logado como Voluntário");
     }
@@ -59,12 +88,12 @@ export default class LoginPage extends Component {
                                 <Label>Login</Label>
                                 <Input
                                     type="text"
-                                    onChange={(e) => this.setValue({ voluntary: { username: e.target.value } })}
+                                    onChange={(e) => this.setValue({ email: e.target.value })}
                                 />
                                 <Label>Senha</Label>
                                 <Input
                                     type="text"
-                                    onChange={(e) => this.setValue({ voluntary: { password: e.target.value } })}
+                                    onChange={(e) => this.setValue({ password: e.target.value })}
                                 />
                             </CardBody>
                             <CardFooter className="text-end">
@@ -87,12 +116,12 @@ export default class LoginPage extends Component {
                                 <Label>Login</Label>
                                 <Input
                                     type="text"
-                                    onChange={(e) => this.setValue({ association: { username: e.target.value } })}
+                                    onChange={(e) => this.setValue({ email: e.target.value })}
                                 />
                                 <Label>Senha</Label>
                                 <Input
                                     type="text"
-                                    onChange={(e) => this.setValue({ association: { password: e.target.value } })}
+                                    onChange={(e) => this.setValue({ password: e.target.value })}
                                 />
 
                             </CardBody>
@@ -115,3 +144,5 @@ export default class LoginPage extends Component {
         )
     }
 }
+
+export default withRouter(LoginPage);

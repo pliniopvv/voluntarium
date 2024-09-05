@@ -1,7 +1,6 @@
 using cppbackend.Repository;
 using csharpapi.Models;
 using Microsoft.EntityFrameworkCore;
-using System.Net.Sockets;
 
 var builder = WebApplication.CreateBuilder(args);
 

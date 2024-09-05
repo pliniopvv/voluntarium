@@ -2,8 +2,14 @@ import { Component, Fragment } from "react";
 import "./BasePage.css";
 import { Link, Outlet } from "react-router-dom";
 import ArrayMenu from "./../../static/Menu";
+import { checkToken } from "../../utils/EspecialFunctions";
 
 export default class BasePage extends Component {
+
+    componentDidMount() {
+        checkToken();
+    }
+
     render() {
         return (
             <Fragment>
@@ -22,7 +28,7 @@ const MenuContainer = (props) => {
         <div className="menu_avatar border rounded-circle m-4">
             <img src={avatar?.img ?? "https://th.bing.com/th/id/R.945f33b643f2ceffcdae90fb57c61854?rik=XcI0SYBgSefoCA&riu=http%3a%2f%2fgetdrawings.com%2ffree-icon-bw%2fanonymous-avatar-icon-19.png&ehk=5n%2buJG66CeLQZsmhaMt8gag5rXuM3TdebAL6W35K1E4%3d&risl=&pid=ImgRaw&r=0"} width="150" height="150" alt="foto perfil" />
         </div>
-        {menu.map(item => <MenuItem item={item} />)}
+        {menu.map((item, i) => <MenuItem key={i} item={item} />)}
     </div>
 }
 
@@ -31,7 +37,7 @@ const MenuItem = (props) => {
     return <div className="menu_item">
         <div>{item.name}</div>
         <ul>
-            {item.submenu.map(subitem => <MenuSubItem subitem={subitem} />)}
+            {item.submenu.map((subitem, i) => <MenuSubItem key={i} subitem={subitem} />)}
         </ul>
     </div>
 }

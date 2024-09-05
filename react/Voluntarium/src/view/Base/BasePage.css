@@ -25,13 +25,14 @@
 }
 #menu_container li {
     background-color: #ddd;
-    height: 0px;
+    max-height: 0px;
     overflow: hidden;
     padding: 0px;
 }
 #menu_container .menu_item:hover li {
-    height: inherit;
+    max-height: 500px;
     padding: 15px;
+    transition: all 0.4s;
 }
 #menu_container .menu_item li:hover {
     background-color: #ccc;
