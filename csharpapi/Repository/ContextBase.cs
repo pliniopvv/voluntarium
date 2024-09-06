@@ -1,10 +1,9 @@
 ﻿using csharpapi.Models;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace cppbackend.Repository
 {
-    public class ContextBase : IdentityDbContext<User>
+    public class ContextBase : DbContext
     {
         public ContextBase(DbContextOptions<ContextBase> options) : base(options)
         {
@@ -14,5 +13,6 @@ namespace cppbackend.Repository
         {
             base.OnModelCreating(modelBuilder);
         }
+        public DbSet<csharpapi.Models.User> User { get; set; } = default!;
     }
 }

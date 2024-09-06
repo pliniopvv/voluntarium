@@ -1,12 +1,11 @@
 ﻿using csharpapi.Models;
 using csharpapi.Services;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace csharpapi.Controllers
 {
-    public class GenericController<T> : Controller where T : Entity
+    public class GenericController<T> : ControllerBase where T : Entity
     {
         private readonly IGenericService<T> service;
         public GenericController (IGenericService<T> service)
@@ -14,51 +13,33 @@ namespace csharpapi.Controllers
             this.service = service;
         }
 
-        [HttpGet]
+        [HttpGet("{id}")]
         [Authorize]
-        public async Task<ActionResult<T>> load([FromHeader] int id)
+        public async Task<ActionResult<T>> load(int id)
         {
-            return View();
+            return Ok(await this.service.Load(id));
         }
 
-        [HttpPost]
+        [HttpPost()]
         [Authorize]
         public async Task<ActionResult<T>> save(T model)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            return Ok(await this.service.Save(model));
         }
 
-        [HttpPut]
+        [HttpPut("{id}")]
         [Authorize]
-        public async Task<ActionResult<T>> alter(int id)
+        public async Task<ActionResult<T>> alter(int id, [FromBody] T model)
         {
-            return View();
+            model.Id = id;
+            return Ok(await this.service.Alter(model));
         }
 
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        [HttpDelete]
+        [HttpDelete("{id}")]
         [Authorize]
-        public async Task<ActionResult<T>> delete(int id, IFormCollection collection)
+        public async Task<ActionResult<T>> delete(int id)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            return await this.service.Delete(id);
         }
     }
 }

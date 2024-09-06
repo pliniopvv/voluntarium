@@ -4,40 +4,40 @@ using csharpapi.Models;
 
 namespace csharpapi.Repository
 {
-    public class GenericRepository<T> where T : Entity
+    public class GenericRepository<T> : IGenericRepository<T> where T : Entity
     {
-        private readonly ContextBase dbContext;
-        public GenericRepository(ContextBase dbContext)
+        public readonly ContextBase _dbContext;
+        public GenericRepository(ContextBase _dbContext)
         {
-            this.dbContext = dbContext;
+            this._dbContext = _dbContext;
         }
 
         public async Task<T> Load(int id)
         {
-            return await dbContext.FindAsync<T>(id);
+            return await _dbContext.FindAsync<T>(id);
         }
 
         public async Task<T> Save(T model)
         {
-            await dbContext.AddAsync<T>(model);
-            await dbContext.SaveChangesAsync();
+            await _dbContext.AddAsync<T>(model);
+            await _dbContext.SaveChangesAsync();
             return model;
         }
 
         public async Task<T> Alter(T model)
         {
             if (model.Id < 0) throw new ArgumentException("Id model notfound to alter : " + model.GetType().Name);
-            dbContext.Update(model);
-            await dbContext.SaveChangesAsync();
+            _dbContext.Update(model);
+            await _dbContext.SaveChangesAsync();
             return model;
         }
 
         public async Task<T> Delete(int Id)
         {
-            var entity = await dbContext.FindAsync<T>(Id);
-            dbContext.Remove<T>(entity);
-            await dbContext.SaveChangesAsync();
-            dbContext.Entry<T>(entity).State = Microsoft.EntityFrameworkCore.EntityState.Detached;
+            var entity = await _dbContext.FindAsync<T>(Id);
+            _dbContext.Remove<T>(entity);
+            await _dbContext.SaveChangesAsync();
+            _dbContext.Entry<T>(entity).State = Microsoft.EntityFrameworkCore.EntityState.Detached;
             entity.Id = 0;
             return entity;
         }
@@ -45,6 +45,9 @@ namespace csharpapi.Repository
 
     public interface IGenericRepository<T> where T : IEntity
     {
-
+        Task<T> Load(int id);
+        Task<T> Save(T model);
+        Task<T> Alter(T model);
+        Task<T> Delete(int Id);
     }
 }
