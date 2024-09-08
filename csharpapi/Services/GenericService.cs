@@ -3,10 +3,10 @@ using csharpapi.Repository;
 
 namespace csharpapi.Services
 {
-    public class GenericService<T> where T : Entity
+    public class GenericService<T> : IGenericService<T> where T : Entity
     {
-        private readonly GenericRepository<T> repository;
-        public GenericService(GenericRepository<T> repository)
+        private readonly IGenericRepository<T> repository;
+        public GenericService(IGenericRepository<T> repository)
         {
             this.repository = repository;
         }

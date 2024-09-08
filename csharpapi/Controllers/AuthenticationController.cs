@@ -7,10 +7,11 @@ namespace csharpapi.Controllers
     public class AuthenticationController : ControllerBase
     {
         private readonly ITokenService _tokenService;
-        AuthenticationController(ITokenService tokenService)
+        public AuthenticationController(ITokenService tokenService)
         {
             this._tokenService = tokenService;
         }
+
         [HttpPost("login", Name = "login")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]

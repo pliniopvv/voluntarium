@@ -1,7 +1,10 @@
 using cppbackend.Repository;
 using csharpapi.Models;
+using csharpapi.Repository;
+using csharpapi.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
@@ -9,7 +12,15 @@ var builder = WebApplication.CreateBuilder(args);
 
 var dbConfig = builder.Configuration.GetConnectionString("PostgreSQL");
 // builder.Services.AddDbContext<ContextBase>(options => options.UseSqlServer(dbConfig));
+
 builder.Services.AddDbContext<ContextBase>(options => options.UseNpgsql(dbConfig));
+
+builder.Services.TryAddScoped<ITokenService, TokenService>();
+
+builder.Services.AddTransient<IGenericRepository<User>, UserRepository>();
+builder.Services.AddTransient<IUserRepository, UserRepository>();
+builder.Services.AddTransient<IGenericService<User>, UserService>();
+builder.Services.AddTransient<IUserService, UserService>();
 
 builder.Services.AddAuthentication(x =>
 {
@@ -20,8 +31,8 @@ builder.Services.AddAuthentication(x =>
     {
         options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
         {
-            ValidateIssuer = true,
-            ValidateAudience = true,
+            //ValidateIssuer = true,
+            //ValidateAudience = true,
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))

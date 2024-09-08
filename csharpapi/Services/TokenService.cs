@@ -14,7 +14,7 @@ namespace csharpapi.Services
         private readonly IConfiguration _configuration;
         private readonly IUserRepository repository;
 
-        TokenService(IConfiguration configuration, IUserRepository repository)
+        public TokenService(IConfiguration configuration, IUserRepository repository)
         {
             this._configuration = configuration;
             this.repository = repository;
@@ -23,7 +23,7 @@ namespace csharpapi.Services
         public async Task<string> GenerateToken(User login)
         {
             var userDb = await this.repository.GetByUsername(login.Username);
-            if (userDb.Password != login.Password)
+            if (userDb == null || userDb.Password != login.Password)
                 return String.Empty;
 
             var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"] ?? string.Empty));
